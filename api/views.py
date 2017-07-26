@@ -23,15 +23,13 @@ class TicketViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer_class()(data=request.data, context={'request': request})
         if serializer.is_valid():
 
-            count = 0
             files = [] # Almacena todos los files si pasa tu validacion
             for x in _file:
                 obj_file = File()
-                obj_file.name = _name[count]
+                obj_file.name = _name[len(files)]
                 obj_file.file = x
                 files.append(obj_file)
                 obj_file.save()
-                count += 1
 
 
             ticket = serializer.save()
