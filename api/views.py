@@ -19,19 +19,21 @@ class TicketViewSet(viewsets.ModelViewSet):
         # con el n_files puedes comprobar que el numero de file es el correcto
         # o mostrar un error.
 
-        count = 0
-        files = [] # Almacena todos los files si pasa tu validacion
-        for x in _file:
-            obj_file = File()
-            obj_file.name = _name[count]
-            obj_file.file = x
-            files.append(obj_file)
-            obj_file.save()
-            count += 1
-
 
         serializer = self.get_serializer_class()(data=request.data, context={'request': request})
         if serializer.is_valid():
+
+            count = 0
+            files = [] # Almacena todos los files si pasa tu validacion
+            for x in _file:
+                obj_file = File()
+                obj_file.name = _name[count]
+                obj_file.file = x
+                files.append(obj_file)
+                obj_file.save()
+                count += 1
+
+
             ticket = serializer.save()
             ticket.files.set(files)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
